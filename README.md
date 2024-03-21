@@ -21,7 +21,3 @@ Este é o primeiro mini-projeto do curso Floripa Mais Tec, onde desenvolvemos um
 2. Abra o arquivo `index.html` em seu navegador
 3. Configure o tempo de trabalho e descanso
 4. Clique em "Iniciar" para começar a sessão de trabalho
-
-## Experiência Gameficada (Bônus)
-
-Se desejar, você pode implementar uma experiência gameficada no projeto para torná-lo mais envolvente e divertido para o usuário. Isso não é um requisito obrigatório, mas um desafio adicional para quem desejar explorar mais a fundo as possibilidades do projeto.
