@@ -1,4 +1,25 @@
 *{
-    margin: 0;
+    margin: 20;
     padding: 0;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family:"Poppins", sans-serif;
+}
+
+h1, p {
+    color: white;
+}
+
+button {
+    background-color:white;
+    color: red;
+    padding: 10px;
+    margin: 30px;
+}
+
+#timer {
+    color: white;
 }
