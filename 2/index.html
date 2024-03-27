@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="css/style.css">
 
     <link rel="shortcut icon" href="./assets/favicon.png" type="image/x-png">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script type="module" src="./src/main.js" defer></script>
+
 </head>
 <body>
 
@@ -22,28 +23,26 @@
         </button>
 
         <section id="timer" class="flex">
-            <span id="minutos">25</span>
+            <span id="minutos">00</span>
             <span>:</span>
             <span id="segundos">00</span>
         </section>
 
         <section id="controls" class="flex">
-            <button id="start" class="ph ph-play-circle" onclick="startPomodoro()"></button>
-            <button id="pause" class="ph ph-pause-circle" onclick="pausePomodoro()"></button>
-            <button id="reset" class="ph ph-stop-circle" onclick="resetPomodoro()"></button>
+            <button data-action="toggleRunning" class="ph ph-play-circle"></button>
+            <button data-action="toggleRunning" class="ph ph-pause-circle"></button>
+            <button data-action="set" class="ph ph-timer secondary"></button>
+            <button data-action="reset" class="ph ph-stop-circle secondary"></button>
+            <button data-action="toggleMusic"class="ph ph-speaker-none secondary"></button>
+            <button data-action="toggleMusic" class="ph ph-speaker-high"></button>
         </section>
 
-        <h2 id="name_exercicio"></h2>
-        <h3 id="dificuldade_exercicio"></h3>
-        <p id="descricao_exercicio">wait</p>
-        <p id="contador"></p>
-        <p id="exercicio_concluido"></p>
-
-        <p>Click no botão abaixo para marcar a quantidade de exercícios executados.</p>
-        <button id="exercise_completed">exercise completed</button>
-
-
     </div>
+
+    <h2 id="nome_exercicio"></h2>
+    <h3 id="dificuldade_exercicio"></h3>
+    <p id="descricao_exercicio"></p>
+    <button id="mostra_exercicio"> teste </button>
 
     <script src="js/script.js"></script>
 </body>

@@ -1,25 +1,163 @@
-*{
-    margin: 20;
+* {
+    margin: 0;
     padding: 0;
-    background-color: black;
+    box-sizing: border-box;
+}
+
+:root {
+    --hue: 194;
+    --bg-color: hsl(var(--hue), 5%, 7%);
+    --text-color: hsla(var(--hue), 40%, 98%, 1);
+    --primary-color: hsl(var(--hue), 100%, 63%);
+    --controns-color: hsl(var(--hue), 0%, 14%);
+    --button-secondary: hsla(var(--hue), 40%, 98%, 1);
+    font-size: clamp(40%, 1% + 2vw, 62.5%);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    display: grid;
+    height: 100vh;
+    place-content: center;
+ 
+}
+
+html.light {
+
+    --text-color: hsl(var(--hue), 5%, 7%);
+    --bg-color: hsla(var(--hue), 40%, 98%, 1);
+    --controns-color: hsl(var(--hue), 0%, 14%);
+
+}
+
+html.light .ph-sun,
+html:not(.light) .ph-moon {
+    display: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+#taggle-mode {
+    position: absolute;
+    right: 3.2rem;
+    top: 3.2rem;
+    font-size: 3.2rem;
+    line-height: 0;
+
+    color: var(--text-color);
+}
+
+
+#app {
+    display: grid;
+    justify-items: center;
+}
+
+.flex {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family:"Poppins", sans-serif;
-}
-
-h1, p {
-    color: white;
-}
-
-button {
-    background-color:white;
-    color: red;
-    padding: 10px;
-    margin: 30px;
 }
 
 #timer {
-    color: white;
+    font-size: 9.6rem;
+    font-weight: bold;
+    font-family: sans-serif;
 }
+
+#controls {
+  margin-top: 1.6rem;
+  padding: 2.2rem 4rem;
+  gap: 1.6rem;
+  background-color: var(--controns-color);
+  border-radius: 999rem;
+}
+
+
+button {
+  background-color: transparent;
+  border: 0;
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 6.4rem;
+  transition: color 0.3s;
+}
+
+button:hover {
+  color: #968ab8bd;
+}
+
+.secondary {
+    color: var(--button-secondary);
+}
+
+/* // */
+
+/* Estilos para os elementos do exercício */
+#name_exercicio {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+  
+  #dificuldade_exercicio {
+    font-size: 18px;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  
+  #descricao_exercicio {
+    font-size: 16px;
+    margin: 0 auto 25px auto; 
+    max-width: 50%; 
+    display: none;
+    align-items: center;
+    padding: 15px; 
+    border-radius: 10px; 
+    background-color: var(--controns-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    text-align: justify; 
+  }
+  
+  #descricao_exercicio.show {
+    display: block;
+  }
+  
+  
+  #contador {
+    display: none;
+  }
+  
+
+  #exercise_completed {
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  #exercise_completed:hover {
+    background-color: #968ab8bd;
+    color: #fff;
+  }
+  
+  
+
+
+  
