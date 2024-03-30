@@ -108,7 +108,7 @@ function exibirExercicio() {
 function getExercises(){
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
     method: 'GET',
-    headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ'},
+    headers: { 'X-Api-Key': 'COLE_A_CHAVE_API'},
     contentType: 'application/json',
   })
   .then(response => response.json())
