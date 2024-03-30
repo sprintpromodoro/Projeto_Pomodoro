@@ -2,8 +2,8 @@ let listaExercicios = [];
 let exercicioAtual = parseInt(localStorage.getItem('exercicioAtual')) || 0;
 let offset = 0;
 let timer;
-let minutos = 25;
-let segundos = 0;
+let minutos = 0;
+let segundos = 3;
 let exercicioConcluido = parseInt(localStorage.getItem('exercicioConcluido')) || 0;
 let isPaused = true; // controla o estado de pausa
 
@@ -28,128 +28,149 @@ toggleModeButton.addEventListener('click', () => {
 botaoExercicio.addEventListener('click', togglePlayPause);
 
 function startPomodoro() {
-  playPauseButton.disabled = false; // Habilita o botão de pause
-  resetButton.disabled = false;
+    playPauseButton.disabled = false; // Habilita o botão de pause
+    resetButton.disabled = false;
 
-  // Verifica se o timer já está em execução antes de iniciar um novo
-  if (!timer) {
-    timer = setInterval(() => {
-      if (!isPaused) { // Verifica se não está pausado
+    // Verifica se o timer já está em execução antes de iniciar um novo
+    if (!timer) {
+        timer = setInterval(() => {
+            if (!isPaused) { // Verifica se não está pausado
+                if (segundos === 0) {
+                    if (minutos === 0) {
+                        clearInterval(timer);
+                        playFinalSound(); // Reproduz som ao final do ciclo
+                        // Mostrar exercício
+                        exibirExercicio();
+                        minutos = 0;
+                        segundos = 3;
+                        playPauseButton.disabled = true; // Desabilita o botão de pause
+                        resetButton.disabled = true;
+                        getExercises(); // Faz nova requisição à API
+                        startRest(); // Inicia o timer de descanso de 5 minutos
+                    } else {
+                        minutos--;
+                        segundos = 59;
+                    }
+                } else {
+                    segundos--;
+                }
+
+                document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
+                document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
+            }
+        }, 1000);
+    }
+}
+
+function startRest() {
+    minutos = 0;
+    segundos = 5;
+    let restTimer = setInterval(() => {
         if (segundos === 0) {
-          if (minutos === 0) {
-            clearInterval(timer);
-            playFinalSound(); // Reproduz som ao final do ciclo
-            // Mostrar exercício
-            exibirExercicio();
-            minutos = 25;
-            segundos = 0;
-            playPauseButton.disabled = true; // Desabilita o botão de pause
-            resetButton.disabled = true;
-            getExercises(); // Faz nova requisição à API
-          } else {
-            minutos--;
-            segundos = 59;
-          }
+            if (minutos === 0) {
+                clearInterval(restTimer);
+                alert('Descanso concluído!'); // Exemplo: Mostra um alerta, você pode substituir por outra ação desejada
+            } else {
+                minutos--;
+                segundos = 59;
+            }
         } else {
-          segundos--;
+            segundos--;
         }
 
         document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
         document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
-      }
     }, 1000);
-  }
 }
 
 function togglePlayPause() {
-  isPaused = !isPaused; // Inverte o estado de pausa
-  if (isPaused) {
-    playPauseButton.classList.remove('ph-pause-circle');
-    playPauseButton.classList.add('ph-play-circle');
-  } else {
-    playPauseButton.classList.remove('ph-play-circle');
-    playPauseButton.classList.add('ph-pause-circle');
-    clearInterval(timer); // Limpa o timer atual
-    timer = null; // Reinicia o timer
-    startPomodoro(); // Inicia o novo timer
-  }
+    isPaused = !isPaused; // Inverte o estado de pausa
+    if (isPaused) {
+        playPauseButton.classList.remove('ph-pause-circle');
+        playPauseButton.classList.add('ph-play-circle');
+    } else {
+        playPauseButton.classList.remove('ph-play-circle');
+        playPauseButton.classList.add('ph-pause-circle');
+        clearInterval(timer); // Limpa o timer atual
+        timer = null; // Reinicia o timer
+        startPomodoro(); // Inicia o novo timer
+    }
 }
 
 function playFinalSound() {
-  const finalSound = new Audio('assets/Bubble Bell Sound effect.mp3');
-  finalSound.play();
+    const finalSound = new Audio('assets/Bubble Bell Sound effect.mp3');
+    finalSound.play();
 }
 
 function resetPomodoro() {
-  clearInterval(timer);
-  minutos = 25;
-  segundos = 0;
-  document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
-  document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
-  playPauseButton.classList.remove('ph-pause-circle'); // Resetar o ícone do botão
-  playPauseButton.classList.add('ph-play-circle');
-  playPauseButton.disabled = false;
-  resetButton.disabled = true;
+    clearInterval(timer);
+    minutos = 25;
+    segundos = 0;
+    document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
+    document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
+    playPauseButton.classList.remove('ph-pause-circle'); // Resetar o ícone do botão
+    playPauseButton.classList.add('ph-play-circle');
+    playPauseButton.disabled = false;
+    resetButton.disabled = true;
 }
 
 function exibirExercicio() {
-  contador.innerText = exercicioAtual;
-  nameExercicio.innerText = listaExercicios[exercicioAtual].name;
-  dificuldadeExercicio.innerText = listaExercicios[exercicioAtual].difficulty;
-  descricaoExercicio.innerText = listaExercicios[exercicioAtual].instructions;
+    contador.innerText = exercicioAtual;
+    nameExercicio.innerText = listaExercicios[exercicioAtual].name;
+    dificuldadeExercicio.innerText = listaExercicios[exercicioAtual].difficulty;
+    descricaoExercicio.innerText = listaExercicios[exercicioAtual].instructions;
 
-  if (descricaoExercicio.innerText.trim() !== "") {
-    descricaoExercicio.classList.add('show');
-  } else {
-    descricaoExercicio.classList.remove('show');
-  }
+    if (descricaoExercicio.innerText.trim() !== "") {
+        descricaoExercicio.classList.add('show');
+    } else {
+        descricaoExercicio.classList.remove('show');
+    }
 }
 
-function getExercises(){
-  fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
-    method: 'GET',
-    headers: { 'X-Api-Key': 'COLAR_KEY_API'}, // COLAR_KEY_API
-    contentType: 'application/json',
-  })
-  .then(response => response.json())
-  .then(dados => {
-    listaExercicios = dados;
+function getExercises() {
+    fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
+            method: 'GET',
+            headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ' }, // COLAR_KEY_API
+            contentType: 'application/json',
+        })
+        .then(response => response.json())
+        .then(dados => {
+            listaExercicios = dados;
 
-    // Salva a chamada da função getExercises() no localStorage
-    localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
-    localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
-  })
-  .catch(error => console.log(error));
+            // Salva a chamada da função getExercises() no localStorage
+            localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
+            localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
+        })
+        .catch(error => console.log(error));
 }
 getExercises();
 
 exercicioConcluidoButton.addEventListener('click', () => {
-  togglePlayPause(); // Iniciar o timer
+    togglePlayPause(); // Iniciar o timer
 
+    if (exercicioAtual === listaExercicios.length - 1) {
+        offset += 10;
+        exercicioAtual = 0;
+        getExercises();
+    } else {
+        exercicioAtual++;
+    }
 
-  if (exercicioAtual === listaExercicios.length - 1) {
-    offset += 10; 
-    exercicioAtual = 0; 
-    getExercises();
-  } else {
-    exercicioAtual++; 
-  }
+    // Exibi o próximo exercício na tela
+    exibirExercicio();
 
-  // Exibi o próximo exercício na tela
-  exibirExercicio();
+    exercicioConcluido++;
+    exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
 
-  exercicioConcluido++;
-  exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
+    // Salva a informação 'You completed X exercise' e o índice do exercício atual no localStorage
+    localStorage.setItem('exercicioConcluido', exercicioConcluido);
+    localStorage.setItem('exercicioAtual', exercicioAtual);
 
-  // Salva a informação 'You completed X exercise' e o índice do exercício atual no localStorage
-  localStorage.setItem('exercicioConcluido', exercicioConcluido);
-  localStorage.setItem('exercicioAtual', exercicioAtual);
-
-  // Limpa as informações exibidas
-  contador.innerText = "";
-  nameExercicio.innerText = "";
-  dificuldadeExercicio.innerText = "";
-  descricaoExercicio.innerText = "";
+    // Limpa as informações exibidas
+    contador.innerText = "";
+    nameExercicio.innerText = "";
+    dificuldadeExercicio.innerText = "";
+    descricaoExercicio.innerText = "";
 });
 
 // Recupera a URL e os dados da requisição do localStorage
