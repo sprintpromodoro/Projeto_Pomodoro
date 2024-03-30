@@ -5,7 +5,7 @@ let timer;
 let minutos = 25;
 let segundos = 0;
 let exercicioConcluido = parseInt(localStorage.getItem('exercicioConcluido')) || 0;
-let isPaused = true; // Adicionado para controlar o estado de pausa
+let isPaused = true; // controla o estado de pausa
 
 const botaoExercicio = document.getElementById('exercise_completed');
 const playPauseButton = document.getElementById('playPauseButton');
@@ -31,7 +31,7 @@ function startPomodoro() {
   playPauseButton.disabled = false; // Habilita o botão de pause
   resetButton.disabled = false;
 
-  // Verificar se o timer já está em execução antes de iniciar um novo
+  // Verifica se o timer já está em execução antes de iniciar um novo
   if (!timer) {
     timer = setInterval(() => {
       if (!isPaused) { // Verifica se não está pausado
@@ -108,7 +108,7 @@ function exibirExercicio() {
 function getExercises(){
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
     method: 'GET',
-    headers: { 'X-Api-Key': 'COLAR_KEY_API'},
+    headers: { 'X-Api-Key': 'COLAR_KEY_API'}, // COLAR_KEY_API
     contentType: 'application/json',
   })
   .then(response => response.json())
@@ -158,4 +158,3 @@ const savedData = JSON.parse(localStorage.getItem('getExercisesData'));
 
 console.log(savedUrl);
 console.log(savedData);
-
