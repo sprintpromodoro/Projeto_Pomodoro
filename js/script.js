@@ -2,8 +2,8 @@ let listaExercicios = [];
 let exercicioAtual = parseInt(localStorage.getItem('exercicioAtual')) || 0;
 let offset = 0;
 let timer;
-let minutos = 0;
-let segundos = 3;
+let minutos = 25;
+let segundos = 0;
 let exercicioConcluido = parseInt(localStorage.getItem('exercicioConcluido')) || 0;
 let isPaused = true; // Adicionado para controlar o estado de pausa
 
@@ -41,8 +41,8 @@ function startPomodoro() {
             playFinalSound(); // Reproduz som ao final do ciclo
             // Mostrar exercício
             exibirExercicio();
-            minutos = 0;
-            segundos = 3;
+            minutos = 25;
+            segundos = 0;
             playPauseButton.disabled = true; // Desabilita o botão de pause
             resetButton.disabled = true;
             getExercises(); // Faz nova requisição à API
@@ -82,8 +82,8 @@ function playFinalSound() {
 
 function resetPomodoro() {
   clearInterval(timer);
-  minutos = 0;
-  segundos = 3;
+  minutos = 25;
+  segundos = 0;
   document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
   document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
   playPauseButton.classList.remove('ph-pause-circle'); // Resetar o ícone do botão
@@ -108,7 +108,7 @@ function exibirExercicio() {
 function getExercises(){
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
     method: 'GET',
-    headers: { 'X-Api-Key': 'COLE_A_CHAVE_API'},
+    headers: { 'X-Api-Key': 'COLAR_KEY_API'},
     contentType: 'application/json',
   })
   .then(response => response.json())

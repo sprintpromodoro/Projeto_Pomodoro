@@ -32,13 +32,19 @@
             <button id="reset" class="ph ph-stop-circle" onclick="resetPomodoro()"></button>
         </section>
 
+        <video id="background-video" autoplay loop muted>
+            <source src="assets/video-galax.mp4" type="video/mp4">
+            Seu navegador não suporta vídeos em HTML5.
+          </video>
+          
+
         <h2 id="name_exercicio"></h2>
         <h3 id="dificuldade_exercicio"></h3>
         <p id="descricao_exercicio">wait</p>
         <p id="contador"></p>
         <p id="exercicio_concluido"></p>
 
-        <p>Click no botão abaixo para marcar a quantidade de exercícios executados.</p>
+        <p id="pblink">Click the button below to mark the number of exercises performed.</p>
         <button id="exercise_completed">exercise completed</button>
 
     </div>

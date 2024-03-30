@@ -15,13 +15,47 @@
 }
 
 body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Poppins', sans-serif;
-    display: grid;
-    height: 100vh;
-    place-content: center;
- 
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Efeito de vidro escuro */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--primary-color);
+  background: var(--bg-color);
+  z-index: -1;
+}
+
+#background-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+  opacity: 0.4; /* Opacidade do vídeo */
+  object-fit: cover;
+  background: transparent;
+}
+
+p {
+  font-size: 1.1em;
+  margin-bottom: 20px; /* Adiciona um espaço de 20px abaixo de cada parágrafo */
 }
 
 html.light {
@@ -73,6 +107,7 @@ html:not(.light) .ph-moon {
     font-size: 9.6rem;
     font-weight: bold;
     font-family: sans-serif;
+    text-shadow: var(--bg-color);
 }
 
 #timerInput {
@@ -86,6 +121,8 @@ html:not(.light) .ph-moon {
   gap: 1.6rem;
   background-color: var(--controns-color);
   border-radius: 999rem;
+  background-color:rgba(12, 12, 12, 0.158);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.63); 
 }
 
 
@@ -96,10 +133,11 @@ button {
   cursor: pointer;
   font-size: 6.4rem;
   transition: color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 button:hover {
-  color: #968ab8bd;
+  color: #615977bd;
 }
 
 .secondary {
@@ -130,8 +168,8 @@ button:hover {
     align-items: center;
     padding: 15px; 
     border-radius: 10px; 
-    background-color: var(--controns-color);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    background-color:rgba(12, 12, 12, 0.308);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.76); 
     text-align: justify; 
   }
   
@@ -161,5 +199,8 @@ button:hover {
     background-color: #968ab8bd;
     color: #fff;
   }
-  
+
+
+
+
   
