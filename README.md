@@ -87,12 +87,10 @@ Desenvolvido por:
 - [Jedir O. Pinho Junior](https://github.com/juniorpinhodev)
 - [Sarah B. Frainer](https://github.com/sarahfrainer)
 - [Bernardo Falcão](https://github.com/BernardoFalcao)
-<<<<<<< HEAD
-- [Guilherme Eggler](https://github.com/GuiEggler)
-=======
 - [Guilherme Eggler](https://github.com/GuiEggler)
 
 
 
 
->>>>>>> 327abc5cb038e5c87afc7cdc1f8aec208cd192cc
+
+
