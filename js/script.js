@@ -16,6 +16,14 @@ const dificuldadeExercicio = document.getElementById('dificuldade_exercicio');
 const descricaoExercicio = document.getElementById('descricao_exercicio');
 const exercicioConcluidoButton = document.getElementById('exercise_completed');
 const exercicioConcluidoText = document.getElementById('exercicio_concluido');
+const toggleModeButton = document.getElementById('toggle-mode');
+const htmlElement = document.documentElement;
+
+//Modifica a cor do layout (dark / light)
+toggleModeButton.addEventListener('click', () => {
+    htmlElement.classList.toggle('light');
+});
+
 
 botaoExercicio.addEventListener('click', togglePlayPause);
 
@@ -100,7 +108,7 @@ function exibirExercicio() {
 function getExercises(){
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
     method: 'GET',
-    headers: { 'X-Api-Key': 'CHAVE_API'},
+    headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ'},
     contentType: 'application/json',
   })
   .then(response => response.json())
@@ -150,3 +158,4 @@ const savedData = JSON.parse(localStorage.getItem('getExercisesData'));
 
 console.log(savedUrl);
 console.log(savedData);
+
