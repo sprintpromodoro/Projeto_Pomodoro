@@ -2,8 +2,8 @@ let listaExercicios = [];
 let exercicioAtual = parseInt(localStorage.getItem('exercicioAtual')) || 0;
 let offset = 0;
 let timer;
-let minutos = 0;
-let segundos = 3;
+let minutos = 25;
+let segundos = 0;
 let exercicioConcluido = parseInt(localStorage.getItem('exercicioConcluido')) || 0;
 let isPaused = true; // controla o estado de pausa
 
@@ -24,8 +24,20 @@ toggleModeButton.addEventListener('click', () => {
     htmlElement.classList.toggle('light');
 });
 
-
 botaoExercicio.addEventListener('click', togglePlayPause);
+
+function getRandomExercise() {
+    let randomIndex = Math.floor(Math.random() * listaExercicios.length);
+    let selectedExercise = listaExercicios[randomIndex];
+
+    // Verifica se o exercício selecionado é diferente do exercício atual
+    if (selectedExercise !== listaExercicios[exercicioAtual]) {
+        exercicioAtual = randomIndex; // Atualiza o exercício atual
+        return selectedExercise;
+    } else {
+        return getRandomExercise(); // Chama recursivamente para selecionar outro exercício
+    }
+}
 
 function startPomodoro() {
     playPauseButton.disabled = false; // Habilita o botão de pause
@@ -41,8 +53,8 @@ function startPomodoro() {
                         playFinalSound(); // Reproduz som ao final do ciclo
                         // Mostrar exercício
                         exibirExercicio();
-                        minutos = 0;
-                        segundos = 3;
+                        minutos = 25;
+                        segundos = 0;
                         playPauseButton.disabled = true; // Desabilita o botão de pause
                         resetButton.disabled = true;
                         getExercises(); // Faz nova requisição à API
@@ -79,16 +91,12 @@ function startRest() { // 5 minutos de descanso
             segundos--;
         }
 
-
-
-        document.getElementById('reset');
         document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
         document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
     }, 1000);
 
     playPauseButton.addEventListener('click', togglePlayPause);
     playPauseButton.removeEventListener('click', togglePlayPause);
-       
 }
 
 function togglePlayPause() {
@@ -109,8 +117,6 @@ function playFinalSound() { // alarme sonoro
     const finalSound = new Audio('assets/Bubble Bell Sound effect.mp3');
     finalSound.play();
 }
-
-
 
 function resetPomodoro() {
     clearInterval(timer);
@@ -138,44 +144,56 @@ function exibirExercicio() {
 }
 
 function getExercises() {
-  fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
-          method: 'GET',
-          headers: { 'X-Api-Key': 'COLE_API_KEY' },
-          contentType: 'application/json',
-      })
-      .then(response => response.json())
-      .then(dados => {
-          listaExercicios = dados;
+    fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
+        method: 'GET',
+        headers: { 'X-Api-Key': 'COLE_API_KEY_AQUI' },
+        contentType: 'application/json',
+    })
+    .then(response => response.json())
+    .then(dados => {
+        // Filtra exercícios que ainda não foram exibidos
+        let filteredExercises = dados.filter(exercise => !listaExercicios.includes(exercise));
 
-          // Incrementa o valor de offset para a próxima requisição
-          offset += 10;
+        // Adiciona os novos exercícios filtrados à lista de exercícios
+        listaExercicios.push(...filteredExercises);
 
-          // Salva a chamada da função getExercises() no localStorage
-          localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
-          localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
-      })
-      .catch(error => console.log(error));
+        // Verifica se há exercícios na lista
+        if (listaExercicios.length > 0) {
+            // Selecione um exercício aleatório e atualize o exercício atual
+            let exercise = getRandomExercise();
+
+            // Incrementa o valor de offset para a próxima requisição
+            offset += 10;
+
+            // Salva a chamada da função getExercises() no localStorage
+            localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
+            localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
+        } else {
+            console.log('Nenhum exercício novo encontrado.');
+        }
+    })
+    .catch(error => console.log(error));
 }
-getExercises()
+getExercises();
 
 exercicioConcluidoButton.addEventListener('click', () => {
-  clearInterval(timer); // Limpa o timer atual, se houver
-  minutos = 0; // Reinicia os minutos para 25
-  segundos = 3; // Reinicia os segundos para 0
- 
-  togglePlayPause();
+    clearInterval(timer); // Limpa o timer atual, se houver
+    minutos = 0; // Reinicia os minutos para 25
+    segundos = 3; // Reinicia os segundos para 0
 
-  exercicioConcluido++;
-  exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
+    togglePlayPause();
 
-  // Salva a informação 'You completed X exercise' no localStorage
-  localStorage.setItem('exercicioConcluido', exercicioConcluido);
+    exercicioConcluido++;
+    exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
 
-  // Limpa as informações exibidas
-  contador.innerText = "";
-  nameExercicio.innerText = "";
-  dificuldadeExercicio.innerText = "";
-  descricaoExercicio.innerText = "";
+    // Salva a informação 'You completed X exercise' no localStorage
+    localStorage.setItem('exercicioConcluido', exercicioConcluido);
+
+    // Limpa as informações exibidas
+    contador.innerText = "";
+    nameExercicio.innerText = "";
+    dificuldadeExercicio.innerText = "";
+    descricaoExercicio.innerText = "";
 });
 
 // Recupera a URL e os dados da requisição do localStorage
