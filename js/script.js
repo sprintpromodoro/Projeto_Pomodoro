@@ -98,7 +98,7 @@ function togglePlayPause() {
     }
 }
 
-function playFinalSound() {
+function playFinalSound() { // alarme sonoro
     const finalSound = new Audio('assets/Bubble Bell Sound effect.mp3');
     finalSound.play();
 }
@@ -129,22 +129,25 @@ function exibirExercicio() {
 }
 
 function getExercises() {
-    fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
-            method: 'GET',
-            headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ' }, // COLAR_KEY_API
-            contentType: 'application/json',
-        })
-        .then(response => response.json())
-        .then(dados => {
-            listaExercicios = dados;
+  fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
+          method: 'GET',
+          headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ' },
+          contentType: 'application/json',
+      })
+      .then(response => response.json())
+      .then(dados => {
+          listaExercicios = dados;
 
-            // Salva a chamada da função getExercises() no localStorage
-            localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
-            localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
-        })
-        .catch(error => console.log(error));
+          // Incrementa o valor de offset para a próxima requisição
+          offset += 10;
+
+          // Salva a chamada da função getExercises() no localStorage
+          localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
+          localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
+      })
+      .catch(error => console.log(error));
 }
-getExercises();
+getExercises()
 
 exercicioConcluidoButton.addEventListener('click', () => {
   clearInterval(timer); // Limpa o timer atual, se houver
