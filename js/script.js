@@ -178,8 +178,8 @@ getExercises();
 
 exercicioConcluidoButton.addEventListener('click', () => {
     clearInterval(timer); // Limpa o timer atual, se houver
-    minutos = 0; // Reinicia os minutos para 25
-    segundos = 3; // Reinicia os segundos para 0
+    minutos = 25; // Reinicia os minutos para 25
+    segundos = 0; // Reinicia os segundos para 0
 
     togglePlayPause();
 
