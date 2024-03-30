@@ -62,14 +62,15 @@ function startPomodoro() {
     }
 }
 
-function startRest() {
+function startRest() { // 5 minutos de descanso
     minutos = 0;
     segundos = 5;
     let restTimer = setInterval(() => {
         if (segundos === 0) {
             if (minutos === 0) {
                 clearInterval(restTimer);
-                alert('Descanso concluído!'); // Exemplo: Mostra um alerta, você pode substituir por outra ação desejada
+                playFinalSound(); // Reproduz som de alarme ao finalizar o descanso
+                
             } else {
                 minutos--;
                 segundos = 59;
@@ -146,31 +147,23 @@ function getExercises() {
 getExercises();
 
 exercicioConcluidoButton.addEventListener('click', () => {
-    togglePlayPause(); // Iniciar o timer
+  clearInterval(timer); // Limpa o timer atual, se houver
+  minutos = 0; // Reinicia os minutos para 25
+  segundos = 3; // Reinicia os segundos para 0
+ 
+  togglePlayPause();
 
-    if (exercicioAtual === listaExercicios.length - 1) {
-        offset += 10;
-        exercicioAtual = 0;
-        getExercises();
-    } else {
-        exercicioAtual++;
-    }
+  exercicioConcluido++;
+  exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
 
-    // Exibi o próximo exercício na tela
-    exibirExercicio();
+  // Salva a informação 'You completed X exercise' no localStorage
+  localStorage.setItem('exercicioConcluido', exercicioConcluido);
 
-    exercicioConcluido++;
-    exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
-
-    // Salva a informação 'You completed X exercise' e o índice do exercício atual no localStorage
-    localStorage.setItem('exercicioConcluido', exercicioConcluido);
-    localStorage.setItem('exercicioAtual', exercicioAtual);
-
-    // Limpa as informações exibidas
-    contador.innerText = "";
-    nameExercicio.innerText = "";
-    dificuldadeExercicio.innerText = "";
-    descricaoExercicio.innerText = "";
+  // Limpa as informações exibidas
+  contador.innerText = "";
+  nameExercicio.innerText = "";
+  dificuldadeExercicio.innerText = "";
+  descricaoExercicio.innerText = "";
 });
 
 // Recupera a URL e os dados da requisição do localStorage
