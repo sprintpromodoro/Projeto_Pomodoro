@@ -17,7 +17,7 @@ Este é o primeiro mini-projeto do curso Floripa Mais Tec, desenvolvido por Jedi
 
 ## Como Utilizar
 
-1. Clone o repositório: ``` git clone https://github.com/sprintpromodoro/Projeto_Promodoro.git ```
+1. Clone o repositório: ``` git clone https://github.com/sprintpromodoro/Projeto_Pomodoro.git ```
 2. Abra o arquivo `index.html` em seu navegador
 3. Clique em "Play" para começar a sessão de trabalho
 4. Ao finalizar o tempo de trabalho, será dado um tempo para executar os exercícios de alongamento e relaxamento.
