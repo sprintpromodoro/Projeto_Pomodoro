@@ -63,8 +63,8 @@ function startPomodoro() {
 }
 
 function startRest() { // 5 minutos de descanso
-    minutos = 0;
-    segundos = 5;
+    minutos = 5;
+    segundos = 0;
     let restTimer = setInterval(() => {
         if (segundos === 0) {
             if (minutos === 0) {
@@ -79,9 +79,16 @@ function startRest() { // 5 minutos de descanso
             segundos--;
         }
 
+
+
+        document.getElementById('reset');
         document.getElementById('minutos').innerText = minutos.toString().padStart(2, '0');
         document.getElementById('segundos').innerText = segundos.toString().padStart(2, '0');
     }, 1000);
+
+    playPauseButton.addEventListener('click', togglePlayPause);
+    playPauseButton.removeEventListener('click', togglePlayPause);
+       
 }
 
 function togglePlayPause() {
@@ -102,6 +109,8 @@ function playFinalSound() { // alarme sonoro
     const finalSound = new Audio('assets/Bubble Bell Sound effect.mp3');
     finalSound.play();
 }
+
+
 
 function resetPomodoro() {
     clearInterval(timer);
@@ -131,7 +140,7 @@ function exibirExercicio() {
 function getExercises() {
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset, {
           method: 'GET',
-          headers: { 'X-Api-Key': 'K0kHL8VPeAY1GSuXkX7OZXCqawQeUPLvpfWgxeYZ' },
+          headers: { 'X-Api-Key': 'COLE_API_KEY' },
           contentType: 'application/json',
       })
       .then(response => response.json())
