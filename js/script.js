@@ -1,10 +1,10 @@
 let listaExercicios = [];
-let exercicioAtual = 0;
+let exercicioAtual = parseInt(localStorage.getItem('exercicioAtual')) || 0;
 let offset = 0;
 let timer;
 let minutos = 0;
 let segundos = 3;
-let exercicioConcluido = 0;
+let exercicioConcluido = parseInt(localStorage.getItem('exercicioConcluido')) || 0;
 let isPaused = true; // Adicionado para controlar o estado de pausa
 
 const botaoExercicio = document.getElementById('exercise_completed');
@@ -20,24 +20,24 @@ const exercicioConcluidoText = document.getElementById('exercicio_concluido');
 botaoExercicio.addEventListener('click', togglePlayPause);
 
 function startPomodoro() {
-  playPauseButton.disabled = false; // Habilitar o botão de pause
+  playPauseButton.disabled = false; // Habilita o botão de pause
   resetButton.disabled = false;
 
   // Verificar se o timer já está em execução antes de iniciar um novo
   if (!timer) {
     timer = setInterval(() => {
-      if (!isPaused) { // Verificar se não está pausado
+      if (!isPaused) { // Verifica se não está pausado
         if (segundos === 0) {
           if (minutos === 0) {
             clearInterval(timer);
-            playFinalSound(); // Reproduzir som ao final do ciclo
+            playFinalSound(); // Reproduz som ao final do ciclo
             // Mostrar exercício
             exibirExercicio();
             minutos = 0;
             segundos = 3;
-            playPauseButton.disabled = true; // Desabilitar o botão de pause
+            playPauseButton.disabled = true; // Desabilita o botão de pause
             resetButton.disabled = true;
-            getExercises(); // Fazer nova requisição à API
+            getExercises(); // Faz nova requisição à API
           } else {
             minutos--;
             segundos = 59;
@@ -53,18 +53,17 @@ function startPomodoro() {
   }
 }
 
-
 function togglePlayPause() {
-  isPaused = !isPaused; // Inverter o estado de pausa
+  isPaused = !isPaused; // Inverte o estado de pausa
   if (isPaused) {
     playPauseButton.classList.remove('ph-pause-circle');
     playPauseButton.classList.add('ph-play-circle');
   } else {
     playPauseButton.classList.remove('ph-play-circle');
     playPauseButton.classList.add('ph-pause-circle');
-    clearInterval(timer); // Limpar o timer atual
-    timer = null; // Reiniciar o timer
-    startPomodoro(); // Iniciar o novo timer
+    clearInterval(timer); // Limpa o timer atual
+    timer = null; // Reinicia o timer
+    startPomodoro(); // Inicia o novo timer
   }
 }
 
@@ -101,12 +100,16 @@ function exibirExercicio() {
 function getExercises(){
   fetch("https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset,{
     method: 'GET',
-    headers: { 'X-Api-Key': 'API'},
+    headers: { 'X-Api-Key': 'CHAVE_API'},
     contentType: 'application/json',
   })
   .then(response => response.json())
   .then(dados => {
     listaExercicios = dados;
+
+    // Salva a chamada da função getExercises() no localStorage
+    localStorage.setItem('getExercisesUrl', "https://api.api-ninjas.com/v1/exercises?type=stretching&offset=" + offset);
+    localStorage.setItem('getExercisesData', JSON.stringify(listaExercicios));
   })
   .catch(error => console.log(error));
 }
@@ -115,27 +118,35 @@ getExercises();
 exercicioConcluidoButton.addEventListener('click', () => {
   togglePlayPause(); // Iniciar o timer
 
-  // Incrementar o exercício atual e verificar se precisa obter uma nova lista de exercícios
+
   if (exercicioAtual === listaExercicios.length - 1) {
-    offset += 10; // Incrementar o offset para obter novos exercícios da API
-    exercicioAtual = 0; // Resetar o índice do exercício atual
-    getExercises(); // Obter uma nova lista de exercícios da API
+    offset += 10; 
+    exercicioAtual = 0; 
+    getExercises();
   } else {
-    exercicioAtual++; // Incrementar o exercício atual
+    exercicioAtual++; 
   }
 
-  // Exibir o próximo exercício na tela
+  // Exibi o próximo exercício na tela
   exibirExercicio();
 
   exercicioConcluido++;
   exercicioConcluidoText.innerText = ` You completed ${exercicioConcluido} exercise`;
-  // Limpar as informações exibidas
+
+  // Salva a informação 'You completed X exercise' e o índice do exercício atual no localStorage
+  localStorage.setItem('exercicioConcluido', exercicioConcluido);
+  localStorage.setItem('exercicioAtual', exercicioAtual);
+
+  // Limpa as informações exibidas
   contador.innerText = "";
   nameExercicio.innerText = "";
   dificuldadeExercicio.innerText = "";
   descricaoExercicio.innerText = "";
 });
 
+// Recupera a URL e os dados da requisição do localStorage
+const savedUrl = localStorage.getItem('getExercisesUrl');
+const savedData = JSON.parse(localStorage.getItem('getExercisesData'));
 
-
-
+console.log(savedUrl);
+console.log(savedData);

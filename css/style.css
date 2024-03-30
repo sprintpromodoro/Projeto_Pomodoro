@@ -75,6 +75,11 @@ html:not(.light) .ph-moon {
     font-family: sans-serif;
 }
 
+#timerInput {
+  display: none;
+}
+
+
 #controls {
   margin-top: 1.6rem;
   padding: 2.2rem 4rem;
@@ -157,7 +162,4 @@ button:hover {
     color: #fff;
   }
   
-  
-
-
   
